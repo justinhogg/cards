@@ -13,6 +13,13 @@ Install dependencies, run this command from the root directory:
 
 ### Commands
 
+*games*
+
+__play:game__ - Play a new card game.
+
+To run this command from the root directory: 
+
+```php cards.php play:game [--players]```
 
 ### Options
 

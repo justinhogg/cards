@@ -6,7 +6,32 @@
 
 namespace Cilex\Cards;
 
-class Deck extends \Cilex\Cards\Cards
+class Deck
 {
-    //put your code here
+    protected $jokers;
+    
+    public function __construct($includeJokers = true)
+    {
+        $this->jokers = $includeJokers;
+    }
+    
+    public function shuffle()
+    {
+        
+    }
+    
+    public function cardsLeft()
+    {
+        
+    }
+    
+    public function deal()
+    {
+        
+    }
+    
+    public function hasJokers()
+    {
+        return (bool) $this->jokers;
+    }
 }

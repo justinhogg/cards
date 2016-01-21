@@ -8,9 +8,32 @@
 
 namespace Cilex\Games;
 
-class Sevens extends \Cilex\Games\Game
+class Sevens implements \Cilex\Games\GameInterface
 {
     public function __construct() {
-        parent::__construct();
+    }
+    
+    public function getDeck() {
+        ;
+    }
+    
+    public function getPlayers() {
+        ;
+    }
+    
+    public function setFinished() {
+        ;
+    }
+    
+    public function setPlayers() {
+        ;
+    }
+    
+    public function hasFinished() {
+        ;
+    }
+    
+    public function nextMove() {
+        ;
     }
 }

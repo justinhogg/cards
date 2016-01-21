@@ -6,7 +6,23 @@
 
 namespace Cilex\Players;
 
-class Player
-{
-    //put your code here
+abstract class Player {
+    
+    public function __construct() {
+        ;
+    }
+    
+    public function getLosses();
+    
+    public function getWins();
+    
+    public function setName();
+    
+    public function setLosses();
+    
+    public function setWins();
+    
+    abstract public function getName();
+     
+    abstract public function hand();
 }

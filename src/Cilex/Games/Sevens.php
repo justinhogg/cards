@@ -32,7 +32,7 @@ class Sevens implements \Cilex\Games\GameInterface
     }
     
     public function getDeck() {
-        return $this->deck->cards();
+        return $this->deck;
     }
     
     /**

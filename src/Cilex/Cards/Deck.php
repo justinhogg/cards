@@ -26,7 +26,24 @@ class Deck
     
     public function shuffle()
     {
+        $deck = array();
         
+        //put all the cards back into the deck
+        $newDeck = $this->newDeck();
+        
+        //get the keys from the array
+        $keys = array_keys($newDeck);
+        
+        //shuffle
+        shuffle($keys);
+        
+        foreach($keys as $key) {
+            $deck[$key] = $newDeck[$key];
+        }
+        
+        $this->deck = $deck;
+        
+        return true;
     }
     
     public function cardsLeft()

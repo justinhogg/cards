@@ -50,27 +50,31 @@ class CardsCommand extends Command
         $gameType    = $input->getArgument(self::ARGUMENT_GAME_TYPE);
         $gamePlayers = $input->getArgument(self::ARGUMENT_GAME_PLAYERS);
         
-        //create a new account
+        //create a table with players
+        $table = new \Cilex\Players\Table();
+        //add players
+        for ($i = 1; $i <= $gamePlayers; $i++) {
+            $player = new \Cilex\Players\CasualPlayer();
+            $player->setName('player '.$i);
+
+            $table->addPlayer($player);
+        }
+        
+        //create a new game
         switch($gameType) {
             case self::GAME_SEVENS:
              
-                //new table instance
-                $table = new \Cilex\Players\Table();
-                //add players
-                for ($i = 1; $i <= $gamePlayers; $i++) {
-                    $player = new \Cilex\Players\CasualPlayer();
-                    $player->setName('player '.$i);
-                    
-                    $table->addPlayer($player);
-                }
                 //new game
                 $game = new \Cilex\Games\Sevens(new \Cilex\Cards\Deck(false), $table);
                 
                 //output information
-                $output->writeln("\nA new game of ".self::GAME_SEVENS." has been created with ".$gamePlayers." player/s! and an unshuffled deck\n");
+                $output->writeln("\nA new game of ".self::GAME_SEVENS." has been created with ".$gamePlayers." player/s! and an unshuffled deck.");
                 
                 //ask if the deck should be shown
-                $this->showDeck($input, $output, array_reverse($game->getDeck(), true));
+                $this->showDeck($input, $output, array_reverse($game->getDeck()->cards(), true));
+                
+                //ask if the deck should be shuffled
+                $this->shuffleDeck($input, $output, $game->getDeck());
                 
                 //var_dump($game->getDeck());exit;
                 break;
@@ -140,16 +144,52 @@ class CardsCommand extends Command
      */
     protected function showDeck(InputInterface $input, OutputInterface $output, array $cards)
     {
+        //output
+        $output->writeln("\n");
+        
         if ($this->getHelper('dialog')->askConfirmation(
             $output,
-            '<question>Would you like to see the current deck?</question> ',
+            "<question>Would you like to see the current deck?</question> ",
             false
         )) {
+            //output
             $output->write("\n|");
+            //loop through each card
             foreach ($cards as $card) {
-                $output->write(" ".$card->getSuitAsString()." ".$card->getValueAsString()." |");
+                //output
+                $output->write(" ".$card->getValueAsString()." of ".$card->getSuitAsString()." |");
             }
-            $output->writeln("\n");
+            return;
+        }
+    }
+    
+    /**
+     * shuffleDeck - interaction to shuffle deck
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param \Cilex\Cards\Deck $deck
+     * @return 
+     */
+    protected function shuffleDeck(InputInterface $input, OutputInterface $output, \Cilex\Cards\Deck $deck)
+    {
+        //output
+        $output->writeln("\n");
+        
+        if ($this->getHelper('dialog')->askConfirmation(
+            $output,
+            "<question>Would you like to shuffle the current deck?</question> ",
+            false
+        )) {
+            //shuffle the deck
+            $deck->shuffle();
+            
+            //output
+            $output->writeln("\nDeck has been shuffled.");
+            
+            //ask if the deck should be shown
+            $this->showDeck($input, $output, array_reverse($deck->cards(), true));
+            
             return;
         }
     }

@@ -57,7 +57,7 @@ class Deck
     
     public function cards()
     {
-        return $this->deck;
+        return array_reverse($this->deck, true);
     }
     
     public function deal()

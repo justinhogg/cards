@@ -70,13 +70,16 @@ class CardsCommand extends Command
                 $output->writeln("\nA new game of ".self::GAME_SEVENS." has been created with ".$gamePlayers." player/s! and an unshuffled deck.");
                 
                 //ask if the deck should be shown
-                $this->showDeck($input, $output, array_reverse($game->getDeck()->cards(), true));
+                $this->showDeck($input, $output, $game->getDeck()->cards());
                 
                 //ask if the deck should be shuffled
-                $this->shuffleDeck($input, $output, $game->getDeck());
+                $deck = $this->shuffleDeck($input, $output, $game->getDeck());
                 
                 //ask if the deck should be dealt
-                $this->deal($input, $output, $game);
+                $this->deal($input, $output, $deck, $table, $game->maxCardsPerRound());
+                
+                //get the winner of the round
+                $this->winningRound($output, $game->getWinner());
                 
                 break;
         }
@@ -154,11 +157,13 @@ class CardsCommand extends Command
             false
         )) {
             //output
-            $output->write("\n|");
+            $output->write("\n");
             //loop through each card
             foreach ($cards as $card) {
                 //output
-                $output->write(" ".$card->getValueAsString()." of ".$card->getSuitAsString()." |");
+                $fg = ($card->getSuit() === \Cilex\Cards\Card::SUIT_HEARTS || $card->getSuit() === \Cilex\Cards\Card::SUIT_DIAMONDS) ? 
+                        'red':'black';
+                $output->write(" <fg=$fg;bg=white;options=underscore>".$card->getValueAsString()." of ".$card->getSuitAsString()."</> ");
             }
             return;
         }
@@ -189,10 +194,12 @@ class CardsCommand extends Command
             $output->writeln("\nDeck has been shuffled.");
             
             //ask if the deck should be shown
-            $this->showDeck($input, $output, array_reverse($deck->cards(), true));
+            $this->showDeck($input, $output, $deck->cards());
             
             return $deck;
         }
+        
+        return $deck;
     }
     
     /**
@@ -200,10 +207,13 @@ class CardsCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @param mixed $game
+     * @param \Cilex\Cards\Deck $deck
+     * @param \Cilex\Players\Table $table
+     * @param int $maxCardsPerRound
+     *
      * @return 
      */
-    protected function deal(InputInterface $input, OutputInterface $output, $game)
+    protected function deal(InputInterface $input, OutputInterface $output, $deck, $table, $maxCardsPerRound)
     {
         //output
         $output->writeln("\n");
@@ -213,24 +223,64 @@ class CardsCommand extends Command
             "<question>Would you like to deal?</question> ",
             false
         )) {
-            $cardsUsed = 0;
-            $cards = $game->getDeck()->cards();
-            $players = $game->getPlayers();
+            $cards = $deck->cards();
+            $cardKeys = array_keys($cards);
             
-            for ($i = 0; $i < $game->maxCardsPerRound(); $i++) {
+            $players = $table->getPlayers();
+            
+            for ($i = 0; $i < $maxCardsPerRound; $i++) {
                 foreach ($players as $player) {
                     //create a new hand if one does not exist
                     ($player->getHand() === null) ? $player->newHand(new \Cilex\Cards\Hand()):false;
                     //deal a card from the deck
-                    $game->getDeck()->deal();
-                    //add card to the player's hand
-                    $player->getHand()->addCard($cards[$cardsUsed]);
-                    $cardsUsed++;
+                    $deck->deal();
+                    //get current card key pointer
+                    $cardKey = current($cardKeys);
+                    //move the pointer of the array to the next card
+                    next($cardKeys);
+                    //add current card in deck to the player's hand
+                    $player->getHand()->addCard($cards[$cardKey]);
                 }
             }
-            //TODO sort shuffle out
-            //var_dump($players[0]->getHand()->show(), $players[1]->getHand()->show());exit;
+
+            //output information
+            $output->writeln("\nAll ".$maxCardsPerRound." cards have been dealt to the ".$table->getPlayerCount()." player/s around the table.");
+            $output->writeln("\nThere are ".$deck->cardsLeft()." cards left in the deck.");
+            
             return;
         }
+    }
+    
+    /**
+     * winningRound - interaction to work out the winner of the round
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param array $winners
+     *
+     * @return 
+     */
+    protected function winningRound(OutputInterface $output, array $winners)
+    {
+        //output information
+        $output->writeln("\n".count($winners)." winner/s of that round.");
+        
+        foreach ($winners as $winner) {
+            //output
+            $output->write("\n".$winner->getName()." had the following winning hand: ");
+            
+            //loop through each card
+            foreach ($winner->getHand()->show() as $card) {
+                //output
+                $fg = ($card->getSuit() === \Cilex\Cards\Card::SUIT_HEARTS || $card->getSuit() === \Cilex\Cards\Card::SUIT_DIAMONDS) ? 
+                        'red':'black';
+                $output->write(" <fg=$fg;bg=white;options=underscore>".$card->getValueAsString()." of ".$card->getSuitAsString()."</> ");
+            }
+        }
+        
+        //output
+        $output->writeln("\n");
+        
+        return;
     }
 }

@@ -20,6 +20,11 @@ class Table {
         return $this->players;
     }
     
+    public function getPlayerCount()
+    {
+        return (int) count($this->players);
+    }
+    
     public function addPlayer(\Cilex\Players\Player $player)
     {
         $this->players[] = $player;

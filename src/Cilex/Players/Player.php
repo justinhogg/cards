@@ -8,18 +8,22 @@ namespace Cilex\Players;
 
 abstract class Player {
     
-    protected $name = 'player';
+    protected $name     = 'player';
     
     protected $hand;
     
+    protected $wins     = 0;
+    
+    protected $losses   = 0;
+    
     public function getLosses()
     {
-        ;
+        return (int) $this->losses;
     }
     
     public function getWins()
     {
-        ;
+        return (int) $this->wins;
     }
     
     /**
@@ -34,12 +38,12 @@ abstract class Player {
     
     public function setLosses()
     {
-        ;
+        $this->losses++;
     }
     
     public function setWins()
     {
-        ;
+        $this->wins++;
     }
     
     /**

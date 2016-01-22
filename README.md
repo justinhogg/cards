@@ -19,7 +19,7 @@ __play:game__ - Play a new card game.
 
 To run this command from the root directory: 
 
-```php cards.php play:game [--players]```
+```php cards.php play:game```
 
 ### Options
 

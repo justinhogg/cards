@@ -45,19 +45,28 @@ class Sevens implements \Cilex\Games\GameInterface
         return $this->table->getPlayers();
     }
     
-    public function setFinished() {
-        ;
-    }
-    
-    public function hasFinished() {
-        ;
-    }
-    
-    public function nextMove() {
-        ;
-    }
-    
     public function maxCardsPerRound() {
         return 7;
+    }
+    
+    public function getWinner() {
+        
+        $winningHand = array();
+        
+        //loop through the players and get the winner of the round
+        foreach ($this->getPlayers() as $player) {
+            if($player->getHand() !== null) {
+                $count = 0;
+                //count the card values
+                foreach ($player->getHand()->show() as $card) {
+                    $count = $count + $card->getValue();
+                }
+                //add to the players array
+                $winningHand[$count][] = $player;
+            }
+        }
+        
+        //return the winning hands 
+        return $winningHand[max(array_keys($winningHand))];
     }
 }

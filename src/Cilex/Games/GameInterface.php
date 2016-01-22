@@ -24,11 +24,7 @@ Interface GameInterface {
     
     public function getDeck();
     
-    public function nextMove();
-    
-    public function hasFinished();
-    
-    public function setFinished();
+    public function getWinner();
     
     public function maxCardsPerRound();
 }

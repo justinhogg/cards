@@ -47,20 +47,34 @@ class CardsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $text = array();
-        
         $gameType    = $input->getArgument(self::ARGUMENT_GAME_TYPE);
         $gamePlayers = $input->getArgument(self::ARGUMENT_GAME_PLAYERS);
         
         //create a new account
         switch($gameType) {
             case self::GAME_SEVENS:
-                $game = new \Cilex\Games\Sevens();
+             
+                //new table instance
+                $table = new \Cilex\Players\Table();
+                //add players
+                for ($i = 1; $i <= $gamePlayers; $i++) {
+                    $player = new \Cilex\Players\CasualPlayer();
+                    $player->setName('player '.$i);
+                    
+                    $table->addPlayer($player);
+                }
+                //new game
+                $game = new \Cilex\Games\Sevens(new \Cilex\Cards\Deck(false), $table);
+                
+                //output information
+                $output->writeln("\nA new game of ".self::GAME_SEVENS." has been created with ".$gamePlayers." player/s! and an unshuffled deck\n");
+                
+                //ask if the deck should be shown
+                $this->showDeck($input, $output, array_reverse($game->getDeck(), true));
+                
+                //var_dump($game->getDeck());exit;
                 break;
         }
-        
-        //output
-        $output->writeln($text);
     }
     
     /**
@@ -74,7 +88,9 @@ class CardsCommand extends Command
         //set up the default type
         $defaultType = self::GAME_SEVENS;
         $question = array(
-            "<comment>". self::GAME_SEVENS ."</comment>: A game that deals seven random cards to players. The highest value of all cards determines the winner. \n",
+            "\n\n******************************GAMES AVALABLE******************************\n\n"
+            . "<comment>". self::GAME_SEVENS ."</comment>: A game that deals seven random cards to players. The highest value of all cards determines the winner.\n\n"
+            . "**************************************************************************\n\n",
             "<question>Please choose a card game to play:</question> [<comment>$defaultType</comment>] ",
         );
         $gameType = $this->getHelper('dialog')->askAndValidate($output, $question, function($typeInput) {
@@ -100,7 +116,7 @@ class CardsCommand extends Command
     {
         $defaultPlayers = 1;
         $question = array(
-            "<comment>1</comment>: Default number of players for this game.\n",
+            "\n",
             "<question>How many players ? </question> [<comment>$defaultPlayers</comment>] ",
         );
         
@@ -112,6 +128,30 @@ class CardsCommand extends Command
         }, 3, $defaultPlayers);
         
         return (int) $players;
+    }
+    
+    /**
+     * showDeck - interaction to show deck
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param array $cards
+     * @return 
+     */
+    protected function showDeck(InputInterface $input, OutputInterface $output, array $cards)
+    {
+        if ($this->getHelper('dialog')->askConfirmation(
+            $output,
+            '<question>Would you like to see the current deck?</question> ',
+            false
+        )) {
+            $output->write("\n|");
+            foreach ($cards as $card) {
+                $output->write(" ".$card->getSuitAsString()." ".$card->getValueAsString()." |");
+            }
+            $output->writeln("\n");
+            return;
+        }
     }
     
 }

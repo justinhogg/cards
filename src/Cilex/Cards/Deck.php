@@ -15,11 +15,21 @@ class Deck
      */
     protected $jokers = false;
     
+    /**
+     * @var array
+     */
     protected $deck;
     
+    /**
+     * @var int
+     */
     protected $cardsUsed = 0;
     
-    public function __construct($includeJokers = true)
+    /**
+     * 
+     * @param boolean $includeJokers
+     */
+    public function __construct($includeJokers = false)
     {
         //set the jokers
         $this->jokers = $includeJokers;
@@ -28,6 +38,10 @@ class Deck
         
     }
     
+    /**
+     * Takes a new deck of cards and shuffles
+     * @return boolean
+     */
     public function shuffle()
     {
         $deck = array();
@@ -50,18 +64,31 @@ class Deck
         return true;
     }
     
+    /**
+     * Returns the amount of cards left in the deck
+     * @return int
+     */
     public function cardsLeft()
     {
         return (int) (count($this->deck) - $this->cardsUsed);
     }
     
+    /**
+     * Returns the cards in a reverse order
+     * @return array
+     */
     public function cards()
     {
         return array_reverse($this->deck, true);
     }
     
+    /**
+     * Deal increments the cards used by the deck, throws exception if no more cards left 
+     * @throws \InvalidArgumentException
+     */
     public function deal()
     {
+        //if all the cards have been used
         if ($this->cardsUsed === count($this->deck)) {
             throw new \InvalidArgumentException('No more cards left in this deck!');
         }
@@ -71,11 +98,19 @@ class Deck
         
     }
     
+    /**
+     * Returns whether this deck is using jokers
+     * @return boolean
+     */
     public function hasJokers()
     {
         return (bool) $this->jokers;
     }
     
+    /**
+     * Builds a new deck of cards, includes jokers if needed
+     * @return array
+     */
     protected function newDeck()
     {
         $deck = array();

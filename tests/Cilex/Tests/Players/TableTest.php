@@ -1,16 +1,16 @@
 <?php
 /**
- * Description of CasualPlayerTest
+ * Description of TableTest
  *
  * @author Justin Hogg <justin@thekordas.com>
  */
 
 namespace Cilex\Tests\Players;
 
-class CasualPlayerTest extends \PHPUnit_Framework_TestCase
+class TableTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Cilex\Players\CasualPlayer
+     * @var Cilex\Players\Table
      */
     protected $object;
      /**
@@ -30,7 +30,7 @@ class CasualPlayerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMock('Cilex\Players\CasualPlayer', array());
+        $this->object = $this->getMock('Cilex\Players\Table', array());
     }
     
     /**
@@ -43,9 +43,30 @@ class CasualPlayerTest extends \PHPUnit_Framework_TestCase
     
     /**
      * Tests whether the constructor instantiates the correct dependencies.
-     * @covers Cilex\Players\CasualPlayer::__construct
+     * @covers Cilex\Players\Table::__construct
      */
     public function testConstruct()
+    {
+    }
+    
+    /**
+     * @covers Cilex\Players\Table::getPlayers
+     */
+    public function testGetPlayers()
+    {
+    }
+    
+    /**
+     * @covers Cilex\Players\Table::getPlayerCount
+     */
+    public function testGetPlayerCount()
+    {
+    }
+    
+    /**
+     * @covers Cilex\Players\Table::addPlayer
+     */
+    public function testAddPlayer()
     {
     }
 }

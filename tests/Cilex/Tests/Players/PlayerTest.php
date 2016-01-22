@@ -1,16 +1,16 @@
 <?php
 /**
- * Description of CasualPlayerTest
+ * Description of PlayerTest
  *
  * @author Justin Hogg <justin@thekordas.com>
  */
 
 namespace Cilex\Tests\Players;
 
-class CasualPlayerTest extends \PHPUnit_Framework_TestCase
+class PlayerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Cilex\Players\CasualPlayer
+     * @var Cilex\Players\Player
      */
     protected $object;
      /**
@@ -30,7 +30,7 @@ class CasualPlayerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMock('Cilex\Players\CasualPlayer', array());
+        $this->object = $this->getMockForAbstractClass('Cilex\Players\Player', array());
     }
     
     /**
@@ -42,10 +42,9 @@ class CasualPlayerTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * Tests whether the constructor instantiates the correct dependencies.
-     * @covers Cilex\Players\CasualPlayer::__construct
+     * @covers Cilex\Players\Player::setName
      */
-    public function testConstruct()
+    public function testSetName()
     {
     }
 }

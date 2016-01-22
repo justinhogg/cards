@@ -12,7 +12,7 @@
 namespace Cilex\Tests;
 
 use Cilex\Application;
-use Cilex\Command\PlayCardsCommand;
+use Cilex\Command\CardsCommand;
 
 /**
  * Application test cases.
@@ -61,9 +61,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      * Tests the command method to see if the command is properly set and the
      * Cilex application is added as container.
      */
-    public function testPlayCardsCommand()
+    public function testCardsCommand()
     {
-        $this->app->command(new PlayCardsCommand());
+        $this->app->command(new CardsCommand());
     }
 
 }

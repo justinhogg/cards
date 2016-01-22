@@ -64,7 +64,7 @@ class CardsCommand extends Command
             case self::GAME_SEVENS:
              
                 //new game
-                $game = new \Cilex\Games\Sevens(new \Cilex\Cards\Deck(false), $table);
+                $game = new \Cilex\Games\Sevens(new \Cilex\Cards\Deck(), $table);
                 
                 //output information
                 $output->writeln("\nA new game of ".self::GAME_SEVENS." has been created with ".$gamePlayers." player/s! and an unshuffled deck.");

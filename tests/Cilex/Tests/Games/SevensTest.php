@@ -30,7 +30,10 @@ class SevensTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMockForAbstractClass('Cilex\Games\Sevens', array());
+        $mockDeck = $this->getMock('Cilex\Cards\Deck');
+        $mockTable = $this->getMock('Cilex\Players\Table');
+        
+        $this->object = $this->getMock('Cilex\Games\Sevens', array(), array($mockDeck, $mockTable));
     }
     
     /**
@@ -43,56 +46,16 @@ class SevensTest extends \PHPUnit_Framework_TestCase
     
     /**
      * Tests whether the constructor instantiates the correct dependencies.
-     * @covers Cilex\Games\Game::__construct
+     * @covers Cilex\Games\Sevens::__construct
      */
     public function testConstruct()
     {
     }
     
     /**
-     * @covers Cilex\Games\Game::setPlayers
-     */
-    public function testSetPlayers()
-    {
-        
-    }
-    
-    /**
-     * @covers Cilex\Games\Game::getPlayers
+     * @covers Cilex\Games\Sevens::getPlayers
      */
     public function testGetPlayers()
-    {
-        
-    }
-    
-    /**
-     * @covers Cilex\Games\Game::getDeck
-     */
-    public function testGetDeck()
-    {
-        
-    }
-    
-    /**
-     * @covers Cilex\Games\Game::nextMove
-     */
-    public function testNextMove()
-    {
-        
-    }
-    
-    /**
-     * @covers Cilex\Games\Game::hasFinished
-     */
-    public function testHasFinished()
-    {
-        
-    }
-    
-    /**
-     * @covers Cilex\Games\Game::setFinished
-     */
-    public function testSetFinished()
     {
         
     }

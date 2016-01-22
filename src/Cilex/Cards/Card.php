@@ -35,36 +35,65 @@ class Card
         self::SUIT_SPADES   => 'spades'
     );
     
+    /**
+     * @var int 
+     */
     protected $suit;
     
+    /**
+     * @var int
+     */
     protected $value;
     
+    /**
+     *
+     * @param mixed $suit
+     * @param mixed $value
+     * @throws \InvalidArgumentException
+     */
     public function __construct($suit, $value) 
     {
-        if (!array_key_exists($suit, $this->suits) && ($value < 1 || $value > 13 )) {
+        //if suit is not defined and value is outside of the range then throw exception
+        if (($suit !== self::SUIT_JOKER && !array_key_exists($suit, $this->suits)) || $value < 1 || $value > 13 ) {
             throw new \InvalidArgumentException('Invalid card suit or value');
         }
-        
+        //set suit
         $this->suit = $suit;
-        
+        //set value
         $this->value = $value;
     }
     
+    /**
+     * Returns the set suit for this card
+     * @return int
+     */
     public function getSuit()
     {
-        return $this->suit;
+        return (int) $this->suit;
     }
     
+    /**
+     * Returns the suit as a string
+     * @return string
+     */
     public function getSuitAsString()
     {
         return (array_key_exists($this->suit, $this->suits)) ? $this->suits[$this->suit]: 'joker';
     }
     
+    /**
+     * Returns the value of the card
+     * @return int
+     */
     public function getValue()
     {
         return (int) $this->value;
     }
     
+    /**
+     * Returns the value of the card as a string
+     * @return string
+     */
     public function getValueAsString()
     {
         $value = '';

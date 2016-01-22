@@ -30,7 +30,7 @@ class DeckTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMockForAbstractClass('Cilex\Cards\Deck', array());
+        $this->object = $this->getMock('Cilex\Cards\Deck', null);
     }
     
     /**
@@ -44,9 +44,31 @@ class DeckTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests whether the constructor instantiates the correct dependencies.
      * @covers Cilex\Cards\Deck::__construct
+     * @covers Cilex\Cards\Deck::newDeck
+     * @covers Cilex\Cards\Deck::hasJokers
+     * @covers Cilex\Cards\Deck::cards
      */
-    public function testConstruct()
+    public function testConstructNoJokers()
     {
+        $this->assertFalse($this->object->hasJokers());
+        
+        $this->assertCount(52, $this->object->cards());
+    }
+    
+    /**
+     * Tests whether the constructor instantiates the correct dependencies.
+     * @covers Cilex\Cards\Deck::__construct
+     * @covers Cilex\Cards\Deck::newDeck
+     * @covers Cilex\Cards\Deck::hasJokers
+     * @covers Cilex\Cards\Deck::cards
+     */
+    public function testConstructWithJokers()
+    {
+        $object = $this->getMock('Cilex\Cards\Deck', null, array(true));
+        
+        $this->assertTrue($object->hasJokers());
+        
+        $this->assertCount(54, $object->cards());
     }
     
     /**
@@ -54,7 +76,7 @@ class DeckTest extends \PHPUnit_Framework_TestCase
      */
     public function testShuffle()
     {
-        
+       $this->assertTrue($this->object->shuffle());
     }
     
     /**
@@ -62,7 +84,25 @@ class DeckTest extends \PHPUnit_Framework_TestCase
      */
     public function testCardsLeft()
     {
-        
+        $this->assertEquals(52, $this->object->cardsLeft());
+    }
+    
+    /**
+     * @covers Cilex\Cards\Deck::cardsLeft
+     * @covers Cilex\Cards\Deck::deal
+     */
+    public function testCardsLeftAfterDeal()
+    {
+        $this->object->deal();
+        $this->assertEquals(51, $this->object->cardsLeft());
+    }
+    
+    /**
+     * @covers Cilex\Cards\Deck::cards
+     */
+    public function testCards()
+    {
+        $this->assertCount(52, $this->object->cards());
     }
     
     /**
@@ -70,22 +110,21 @@ class DeckTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeal()
     {
-        
+        $this->object->deal();
+        $this->assertEquals(51, $this->object->cardsLeft());
     }
     
     /**
-     * @covers Cilex\Cards\Deck::hasJokers
+     * @covers Cilex\Cards\Deck::deal
+     * @expectedException        InvalidArgumentException
+     * @expectedExceptionMessage No more cards left in this deck!
      */
-    public function testHasJokers()
+    public function testDealNoMoreCards()
     {
+        foreach ($this->object->cards() as $card) {
+            $this->object->deal();
+        }
         
-    }
-    
-    /**
-     * @covers Cilex\Cards\Deck::hasJokers
-     */
-    public function testHasNoJokers()
-    {
-        
+        $this->object->deal();
     }
 }

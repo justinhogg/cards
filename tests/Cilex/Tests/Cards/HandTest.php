@@ -30,7 +30,7 @@ class HandTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMockForAbstractClass('Cilex\Cards\Hand', array());
+        $this->object = $this->getMock('Cilex\Cards\Hand', null);
     }
     
     /**
@@ -51,18 +51,16 @@ class HandTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @covers Cilex\Cards\Hand::addCard
+     * @covers Cilex\Cards\Hand::show
      */
     public function testAddCard()
     {
+        $mockCard = $this->getMock('Cilex\Cards\Card', null, array(1,1));
         
-    }
-    
-    /**
-     * @covers Cilex\Cards\Hand::removeCard
-     */
-    public function testRemoveCard()
-    {
+        $this->object->addCard($mockCard);
         
+        $this->assertCount(1, $this->object->show());
+
     }
     
     /**
@@ -70,15 +68,7 @@ class HandTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCardCount()
     {
-        
-    }
-    
-    /**
-     * @covers Cilex\Cards\Hand::getCardPosition
-     */
-    public function testGetCardPosition()
-    {
-        
+        $this->assertEquals(0, $this->object->getCardCount());
     }
     
     /**
@@ -86,7 +76,7 @@ class HandTest extends \PHPUnit_Framework_TestCase
      */
     public function testSortBySuit()
     {
-        
+        $this->assertNull($this->object->sortBySuit());
     }
     
     /**
@@ -94,7 +84,7 @@ class HandTest extends \PHPUnit_Framework_TestCase
      */
     public function testSortByValue()
     {
-        
+        $this->assertNull($this->object->sortByValue());
     }
     
     /**
@@ -102,6 +92,6 @@ class HandTest extends \PHPUnit_Framework_TestCase
      */
     public function testShow()
     {
-        
+        $this->assertCount(0, $this->object->show());
     }
 }

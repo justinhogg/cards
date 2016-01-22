@@ -31,13 +31,16 @@ class Sevens implements \Cilex\Games\GameInterface
         $this->table    = $table;
     }
     
+    /**
+     * Returns the deck used for this game
+     * @return \Cilex\Cards\Dec
+     */
     public function getDeck() {
         return $this->deck;
     }
     
     /**
      * Gets the players playing this game
-     *
      * @return array
      */
     public function getPlayers() 
@@ -45,10 +48,18 @@ class Sevens implements \Cilex\Games\GameInterface
         return $this->table->getPlayers();
     }
     
+    /**
+     * Card limits per player for this game 
+     * @return int
+     */
     public function maxCardsPerRound() {
         return 7;
     }
     
+    /**
+     * Returns the winner/s of this game
+     * @return array
+     */
     public function getWinner() {
         
         $winningHand = array();

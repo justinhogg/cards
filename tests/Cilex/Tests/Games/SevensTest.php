@@ -30,10 +30,13 @@ class SevensTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
+        $mockPlayer = $this->getMock('\Cilex\Players\CasualPlayer');
         $mockDeck = $this->getMock('Cilex\Cards\Deck');
-        $mockTable = $this->getMock('Cilex\Players\Table');
+        //set up mock table
+        $mockTable = $this->getMock('Cilex\Players\Table', array('getPlayers'));
+        $mockTable->expects($this->any())->method('getPlayers')->will($this->returnValue(array(0=>$mockPlayer)));
         
-        $this->object = $this->getMock('Cilex\Games\Sevens', array(), array($mockDeck, $mockTable));
+        $this->object = $this->getMock('Cilex\Games\Sevens', null, array($mockDeck, $mockTable));
     }
     
     /**
@@ -57,6 +60,22 @@ class SevensTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPlayers()
     {
-        
+        $this->assertCount(1, $this->object->getPlayers());
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::getDeck
+     */
+    public function testGetDeck()
+    {
+        $this->assertInstanceOf('\Cilex\Cards\Deck', $this->object->getDeck());
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::maxCardsPerRound
+     */
+    public function testMaxCardsPerRound()
+    {
+        $this->assertEquals(7, $this->object->maxCardsPerRound());
     }
 }

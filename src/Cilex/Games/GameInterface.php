@@ -17,14 +17,25 @@ Interface GameInterface {
     
     /**
      * Gets the players playing this game
-     *
      * @return array
      */
     public function getPlayers();
     
+    /**
+     * Returns the deck used for this game
+     * @return \Cilex\Cards\Dec
+     */
     public function getDeck();
     
+    /**
+     * Returns the winner/s of this game
+     * @return array
+     */
     public function getWinner();
     
+    /**
+     * Card limits per player for this game 
+     * @return int
+     */
     public function maxCardsPerRound();
 }

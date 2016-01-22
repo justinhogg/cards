@@ -10,10 +10,14 @@ use Cilex\Cards\Card;
 
 class Deck
 {
-    
+    /**
+     * @var boolean 
+     */
     protected $jokers = false;
     
     protected $deck;
+    
+    protected $cardsUsed = 0;
     
     public function __construct($includeJokers = true)
     {
@@ -48,7 +52,7 @@ class Deck
     
     public function cardsLeft()
     {
-        
+        return (int) (count($this->deck) - $this->cardsUsed);
     }
     
     public function cards()
@@ -58,6 +62,12 @@ class Deck
     
     public function deal()
     {
+        if ($this->cardsUsed === count($this->deck)) {
+            throw new \InvalidArgumentException('No more cards left in this deck!');
+        }
+        
+        //increment the cards used
+        $this->cardsUsed++;
         
     }
     

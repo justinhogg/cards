@@ -8,14 +8,16 @@ namespace Cilex\Cards;
 
 class Hand
 {
+    protected $cards;
+    
     public function __construct()
     {
         ;
     }
     
-    public function addCard()
+    public function addCard(\Cilex\Cards\Card $card)
     {
-        
+        $this->cards[] = $card;
     }
     
     public function removeCard()
@@ -45,6 +47,6 @@ class Hand
     
     public function show()
     {
-        
+        return $this->cards;
     }
 }

@@ -56,7 +56,6 @@ class CardsCommand extends Command
         for ($i = 1; $i <= $gamePlayers; $i++) {
             $player = new \Cilex\Players\CasualPlayer();
             $player->setName('player '.$i);
-
             $table->addPlayer($player);
         }
         
@@ -76,7 +75,9 @@ class CardsCommand extends Command
                 //ask if the deck should be shuffled
                 $this->shuffleDeck($input, $output, $game->getDeck());
                 
-                //var_dump($game->getDeck());exit;
+                //ask if the deck should be dealt
+                $this->deal($input, $output, $game);
+                
                 break;
         }
     }
@@ -169,7 +170,7 @@ class CardsCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @param \Cilex\Cards\Deck $deck
-     * @return 
+     * @return \Cilex\Cards\Deck
      */
     protected function shuffleDeck(InputInterface $input, OutputInterface $output, \Cilex\Cards\Deck $deck)
     {
@@ -190,8 +191,46 @@ class CardsCommand extends Command
             //ask if the deck should be shown
             $this->showDeck($input, $output, array_reverse($deck->cards(), true));
             
-            return;
+            return $deck;
         }
     }
     
+    /**
+     * dealDeck - interaction to deal the deck
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param mixed $game
+     * @return 
+     */
+    protected function deal(InputInterface $input, OutputInterface $output, $game)
+    {
+        //output
+        $output->writeln("\n");
+        
+        if ($this->getHelper('dialog')->askConfirmation(
+            $output,
+            "<question>Would you like to deal?</question> ",
+            false
+        )) {
+            $cardsUsed = 0;
+            $cards = $game->getDeck()->cards();
+            $players = $game->getPlayers();
+            
+            for ($i = 0; $i < $game->maxCardsPerRound(); $i++) {
+                foreach ($players as $player) {
+                    //create a new hand if one does not exist
+                    ($player->getHand() === null) ? $player->newHand(new \Cilex\Cards\Hand()):false;
+                    //deal a card from the deck
+                    $game->getDeck()->deal();
+                    //add card to the player's hand
+                    $player->getHand()->addCard($cards[$cardsUsed]);
+                    $cardsUsed++;
+                }
+            }
+            //TODO sort shuffle out
+            //var_dump($players[0]->getHand()->show(), $players[1]->getHand()->show());exit;
+            return;
+        }
+    }
 }

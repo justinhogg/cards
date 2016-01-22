@@ -29,4 +29,6 @@ Interface GameInterface {
     public function hasFinished();
     
     public function setFinished();
+    
+    public function maxCardsPerRound();
 }

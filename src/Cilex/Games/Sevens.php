@@ -56,4 +56,8 @@ class Sevens implements \Cilex\Games\GameInterface
     public function nextMove() {
         ;
     }
+    
+    public function maxCardsPerRound() {
+        return 7;
+    }
 }

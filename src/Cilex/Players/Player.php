@@ -10,6 +10,8 @@ abstract class Player {
     
     protected $name = 'player';
     
+    protected $hand;
+    
     public function getLosses()
     {
         ;
@@ -49,6 +51,11 @@ abstract class Player {
     {
         return $this->name;
     }
-     
-    abstract public function hand();
+    
+    public function newHand(\Cilex\Cards\Hand $hand)
+    {
+        $this->hand = $hand;
+    }
+
+    abstract public function getHand();
 }

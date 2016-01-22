@@ -12,8 +12,9 @@ class CasualPlayer extends \Cilex\Players\Player
     {
     }
 
-    public function hand() 
+    public function getHand() 
     {
-        ;
+        return $this->hand;
     }
+   
 }

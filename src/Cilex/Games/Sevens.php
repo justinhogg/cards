@@ -10,6 +10,8 @@ namespace Cilex\Games;
 
 class Sevens implements \Cilex\Games\GameInterface
 {
+    const GAME_NAME = 'sevens';
+    
     /**
      * @var \Cilex\Cards\Deck 
      */
@@ -40,12 +42,12 @@ class Sevens implements \Cilex\Games\GameInterface
     }
     
     /**
-     * Gets the players playing this game
-     * @return array
+     * Gets the table
+     * @return \Cilex\Players\Table
      */
-    public function getPlayers() 
+    public function getTable()
     {
-        return $this->table->getPlayers();
+        return $this->table;
     }
     
     /**
@@ -59,25 +61,53 @@ class Sevens implements \Cilex\Games\GameInterface
     /**
      * Returns the winner/s of this game
      * @return array
+     * @throws \InvalidArgumentException
      */
     public function getWinner() {
         
         $winningHand = array();
         
         //loop through the players and get the winner of the round
-        foreach ($this->getPlayers() as $player) {
-            if($player->getHand() !== null) {
-                $count = 0;
-                //count the card values
-                foreach ($player->getHand()->show() as $card) {
-                    $count = $count + $card->getValue();
+        if ($this->table->getPlayerCount() > 0) {
+            //loop through the players
+            foreach ($this->table->getPlayers() as $player) {
+                //check to see if the player has a hand if not set the winning hand to value 0
+                if($player->getHand()->getCardCount() > 0) {
+                    $count = 0;
+                    //count the card values
+                    foreach ($player->getHand()->show() as $card) {
+                        $count = $count + $card->getValue();
+                    }
+                    //add to the players array
+                    $winningHand[$count][] = $player;
+                } else {
+                    $winningHand[0][] = $player;
                 }
-                //add to the players array
-                $winningHand[$count][] = $player;
             }
+        } else {
+            throw new \InvalidArgumentException('Not enough players to determine a winner!');
         }
         
         //return the winning hands 
         return $winningHand[max(array_keys($winningHand))];
     }
+    
+    /**
+     * Returns the name of the game
+     * @return string
+     */
+    public static function getName()
+    {
+        return self::GAME_NAME;
+    }
+    
+    /**
+     * Returns information about the game
+     * @return string
+     */
+    public static function getInformation()
+    {
+        return "<comment>". self::GAME_NAME ."</comment>: A game that deals seven random cards to players. The highest value of all cards determines the winner.\n";
+    }
+    
 }

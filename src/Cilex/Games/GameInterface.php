@@ -16,10 +16,10 @@ Interface GameInterface {
     public function __construct(\Cilex\Cards\Deck $deck, \Cilex\Players\Table $table);
     
     /**
-     * Gets the players playing this game
-     * @return array
+     * Gets the table
+     * @return \Cilex\Players\Table
      */
-    public function getPlayers();
+    public function getTable();
     
     /**
      * Returns the deck used for this game
@@ -38,4 +38,18 @@ Interface GameInterface {
      * @return int
      */
     public function maxCardsPerRound();
+    
+    /**
+     * Returns the name of the game
+     * @return string
+     */
+    public static function getName();
+    
+    /**
+     * Returns information about the game
+     * @return string
+     */
+    public static function getInformation();
+    
+    
 }

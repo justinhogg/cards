@@ -30,12 +30,36 @@ class SevensTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $mockPlayer = $this->getMock('\Cilex\Players\CasualPlayer');
+        $mockCard = $this->getMock('Cilex\Cards\Card', array('getValue'), array(1,5));
+        $mockCard->expects($this->any())->method('getValue')->will($this->returnValue(5));
+        
+        $mockHand = $this->getMock('Cilex\Cards\Hand', array('addCard', 'show', 'getCardCount'));
+        $mockHand->expects($this->any())->method('addCard')->will($this->returnValue($mockCard));
+        $mockHand->expects($this->any())->method('show')->will($this->returnValue(array(0=>$mockCard)));
+        
+        $mockPlayer = $this->getMock('Cilex\Players\CasualPlayer', array('getHand'));
+        $mockPlayer->expects($this->any())->method('getHand')->will($this->returnValue($mockHand));
+        
         $mockDeck = $this->getMock('Cilex\Cards\Deck');
         //set up mock table
-        $mockTable = $this->getMock('Cilex\Players\Table', array('getPlayers'));
-        $mockTable->expects($this->any())->method('getPlayers')->will($this->returnValue(array(0=>$mockPlayer)));
+        $mockTable = $this->getMock('Cilex\Players\Table', array('getPlayers','getPlayerCount'));
         
+        switch ($this->getName()) {
+            case 'testGetWinnerNoPlayers':
+                $mockTable->expects($this->any())->method('getPlayerCount')->will($this->returnValue(0));
+                break;
+            case 'testGetWinnerNoHand':
+                $mockHand->expects($this->any())->method('getCardCount')->will($this->returnValue(0));
+                $mockTable->expects($this->any())->method('getPlayerCount')->will($this->returnValue(1));
+                $mockTable->expects($this->any())->method('getPlayers')->will($this->returnValue(array(0=>$mockPlayer)));
+                break;
+            default:
+                $mockHand->expects($this->any())->method('getCardCount')->will($this->returnValue(1));
+                $mockTable->expects($this->any())->method('getPlayerCount')->will($this->returnValue(1));
+                $mockTable->expects($this->any())->method('getPlayers')->will($this->returnValue(array(0=>$mockPlayer)));
+                break;
+        }
+
         $this->object = $this->getMock('Cilex\Games\Sevens', null, array($mockDeck, $mockTable));
     }
     
@@ -56,11 +80,11 @@ class SevensTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @covers Cilex\Games\Sevens::getPlayers
+     * @covers Cilex\Games\Sevens::getTable
      */
-    public function testGetPlayers()
+    public function testGetTable()
     {
-        $this->assertCount(1, $this->object->getPlayers());
+        $this->assertInstanceOf('\Cilex\Players\Table', $this->object->getTable());
     }
     
     /**
@@ -77,5 +101,51 @@ class SevensTest extends \PHPUnit_Framework_TestCase
     public function testMaxCardsPerRound()
     {
         $this->assertEquals(7, $this->object->maxCardsPerRound());
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::getWinner
+     * @expectedException        InvalidArgumentException
+     * @expectedExceptionMessage Not enough players to determine a winner!
+     */
+    public function testGetWinnerNoPlayers()
+    {
+        $this->object->getWinner();
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::getWinner
+     */
+    public function testGetWinnerNoHand()
+    {
+        $winner = $this->object->getWinner();
+        $this->assertArrayHasKey(0, $winner);
+        $this->assertInstanceOf('\Cilex\Players\Player', $winner[0]);
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::getWinner
+     */
+    public function testGetWinner()
+    {
+        $winner = $this->object->getWinner();
+        $this->assertArrayHasKey(0, $winner);
+        $this->assertInstanceOf('\Cilex\Players\Player', $winner[0]);
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::getName
+     */
+    public function testGetName()
+    {
+        $this->assertEquals('sevens', $this->object->getName());
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::getInformation
+     */
+    public function testInformation()
+    {
+        $this->assertStringMatchesFormat('%a', \Cilex\Games\Sevens::getInformation());
     }
 }

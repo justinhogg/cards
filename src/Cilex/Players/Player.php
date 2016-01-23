@@ -21,6 +21,10 @@ abstract class Player {
         return (int) $this->losses;
     }
     
+    /**
+     * Returns the wins of the player
+     * @return int
+     */
     public function getWins()
     {
         return (int) $this->wins;
@@ -36,11 +40,17 @@ abstract class Player {
         $this->name = $name;
     }
     
+    /**
+     * Sets the losses of the player
+     */
     public function setLosses()
     {
         $this->losses++;
     }
     
+    /**
+     * Sets the wins of the player
+     */
     public function setWins()
     {
         $this->wins++;
@@ -56,10 +66,17 @@ abstract class Player {
         return $this->name;
     }
     
+    /**
+     * Sets a new hand for the player
+     * @param \Cilex\Cards\Hand $hand
+     */
     public function newHand(\Cilex\Cards\Hand $hand)
     {
         $this->hand = $hand;
     }
 
+    /**
+     * Returns the hand of the player
+     */
     abstract public function getHand();
 }

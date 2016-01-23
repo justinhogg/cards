@@ -12,12 +12,18 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Cilex\Provider\Console\Command;
 
+use Cilex\Players\Table;
+use Cilex\Players\CasualPlayer;
+use Cilex\Games\Sevens;
+use Cilex\Cards\Deck;
+use Cilex\Cards\Hand;
+use Cilex\Cards\Card;
+
 class CardsCommand extends Command
 {
     
     const ARGUMENT_GAME_TYPE    = 'gameType';
     const ARGUMENT_GAME_PLAYERS = 'gamePlayers';
-    const GAME_SEVENS           = 'sevens';
     
     /**
      * {@inheritDoc}
@@ -51,37 +57,39 @@ class CardsCommand extends Command
         $gamePlayers = $input->getArgument(self::ARGUMENT_GAME_PLAYERS);
         
         //create a table with players
-        $table = new \Cilex\Players\Table();
+        $table = new Table();
         //add players
         for ($i = 1; $i <= $gamePlayers; $i++) {
-            $player = new \Cilex\Players\CasualPlayer();
+            $player = new CasualPlayer();
             $player->setName('player '.$i);
             $table->addPlayer($player);
         }
         
         //create a new game
         switch($gameType) {
-            case self::GAME_SEVENS:
+            case Sevens::GAME_NAME:
              
                 //new game
-                $game = new \Cilex\Games\Sevens(new \Cilex\Cards\Deck(), $table);
+                $game = new Sevens(new Deck(), $table);
                 
                 //output information
-                $output->writeln("\nA new game of ".self::GAME_SEVENS." has been created with ".$gamePlayers." player/s! and an unshuffled deck.");
-                
-                //ask if the deck should be shown
-                $this->showDeck($input, $output, $game->getDeck()->cards());
-                
-                //ask if the deck should be shuffled
-                $deck = $this->shuffleDeck($input, $output, $game->getDeck());
-                
-                //ask if the deck should be dealt
-                $this->deal($input, $output, $deck, $table, $game->maxCardsPerRound());
-                
-                //get the winner of the round
-                $this->winningRound($output, $game->getWinner());
-                
+                $output->writeln("\nA new game of ".Sevens::getName()." has been created with ".$table->getPlayerCount()." player/s! and an unshuffled deck.");
+
                 break;
+        }
+        
+        if ($game) {
+            //ask if the deck should be shown
+            $this->showDeck($input, $output, $game->getDeck()->cards());
+
+            //ask if the deck should be shuffled
+            $deck = $this->shuffleDeck($input, $output, $game->getDeck());
+
+            //ask if the deck should be dealt
+            $this->deal($input, $output, $deck, $table, $game->maxCardsPerRound());
+
+            //get the winner of the round
+            $this->winningRound($output, $game->getWinner());
         }
     }
     
@@ -94,16 +102,16 @@ class CardsCommand extends Command
     protected function getGameType(OutputInterface $output)
     {
         //set up the default type
-        $defaultType = self::GAME_SEVENS;
+        $defaultType = Sevens::getName();
         $question = array(
             "\n\n******************************GAMES AVALABLE******************************\n\n"
-            . "<comment>". self::GAME_SEVENS ."</comment>: A game that deals seven random cards to players. The highest value of all cards determines the winner.\n\n"
+            . Sevens::getInformation()
             . "**************************************************************************\n\n",
             "<question>Please choose a card game to play:</question> [<comment>$defaultType</comment>] ",
         );
         $gameType = $this->getHelper('dialog')->askAndValidate($output, $question, function($typeInput) {
             if (!in_array($typeInput, array(
-                    self::GAME_SEVENS
+                    Sevens::getName()
                 ))) {
                 throw new \InvalidArgumentException('Invalid game type');
             }
@@ -161,7 +169,7 @@ class CardsCommand extends Command
             //loop through each card
             foreach ($cards as $card) {
                 //output
-                $fg = ($card->getSuit() === \Cilex\Cards\Card::SUIT_HEARTS || $card->getSuit() === \Cilex\Cards\Card::SUIT_DIAMONDS) ? 
+                $fg = ($card->getSuit() === Card::SUIT_HEARTS || $card->getSuit() === Card::SUIT_DIAMONDS) ? 
                         'red':'black';
                 $output->write(" <fg=$fg;bg=white;options=underscore>".$card->getValueAsString()." of ".$card->getSuitAsString()."</> ");
             }
@@ -177,7 +185,7 @@ class CardsCommand extends Command
      * @param \Cilex\Cards\Deck $deck
      * @return \Cilex\Cards\Deck
      */
-    protected function shuffleDeck(InputInterface $input, OutputInterface $output, \Cilex\Cards\Deck $deck)
+    protected function shuffleDeck(InputInterface $input, OutputInterface $output, Deck $deck)
     {
         //output
         $output->writeln("\n");
@@ -231,7 +239,7 @@ class CardsCommand extends Command
             for ($i = 0; $i < $maxCardsPerRound; $i++) {
                 foreach ($players as $player) {
                     //create a new hand if one does not exist
-                    ($player->getHand() === null) ? $player->newHand(new \Cilex\Cards\Hand()):false;
+                    ($player->getHand() === null) ? $player->newHand(new Hand()):false;
                     //deal a card from the deck
                     $deck->deal();
                     //get current card key pointer
@@ -272,7 +280,7 @@ class CardsCommand extends Command
             //loop through each card
             foreach ($winner->getHand()->show() as $card) {
                 //output
-                $fg = ($card->getSuit() === \Cilex\Cards\Card::SUIT_HEARTS || $card->getSuit() === \Cilex\Cards\Card::SUIT_DIAMONDS) ? 
+                $fg = ($card->getSuit() === Card::SUIT_HEARTS || $card->getSuit() === Card::SUIT_DIAMONDS) ? 
                         'red':'black';
                 $output->write(" <fg=$fg;bg=white;options=underscore>".$card->getValueAsString()." of ".$card->getSuitAsString()."</> ");
             }

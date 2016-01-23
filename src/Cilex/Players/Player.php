@@ -70,10 +70,7 @@ abstract class Player {
      * Sets a new hand for the player
      * @param \Cilex\Cards\Hand $hand
      */
-    public function newHand(\Cilex\Cards\Hand $hand)
-    {
-        $this->hand = $hand;
-    }
+    abstract public function newHand(\Cilex\Cards\Hand $hand);
 
     /**
      * Returns the hand of the player

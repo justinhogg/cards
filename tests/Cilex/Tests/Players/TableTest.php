@@ -30,7 +30,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMock('Cilex\Players\Table', array());
+        $this->object = new \Cilex\Players\Table();
     }
     
     /**
@@ -52,8 +52,20 @@ class TableTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Cilex\Players\Table::getPlayers
      */
+    public function testGetNoPlayers()
+    {
+        $this->assertCount(0, $this->object->getPlayers());
+    }
+    
+    /**
+     * @covers Cilex\Players\Table::getPlayers
+     * @covers Cilex\Players\Table::addPlayer
+     */
     public function testGetPlayers()
     {
+        $mockPlayer = $this->getMock('Cilex\Players\CasualPlayer');
+        $this->object->addPlayer($mockPlayer);
+        $this->assertCount(1, $this->object->getPlayers());
     }
     
     /**
@@ -61,13 +73,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPlayerCount()
     {
-    }
-    
-    /**
-     * @covers Cilex\Players\Table::addPlayer
-     */
-    public function testAddPlayer()
-    {
+        $this->assertEquals(0, $this->object->getPlayerCount());
     }
 }
 

@@ -60,7 +60,7 @@ class SevensTest extends \PHPUnit_Framework_TestCase
                 break;
         }
 
-        $this->object = $this->getMock('Cilex\Games\Sevens', null, array($mockDeck, $mockTable));
+        $this->object = new \Cilex\Games\Sevens($mockDeck, $mockTable);
     }
     
     /**

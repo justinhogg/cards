@@ -32,7 +32,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
         //set up test object
         switch ($this->getName()) {
             default:
-                $this->object = $this->getMock('Cilex\Cards\Card', null, array(1,1));
+                $this->object = new \Cilex\Cards\Card(1, 1);
                 break;
         }
         
@@ -66,7 +66,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadSuitConstruct()
     {
-        $this->getMock('Cilex\Cards\Card', array(), array(10,1));
+        new \Cilex\Cards\Card(10,1);
     }
     
     /**
@@ -77,7 +77,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadValueConstruct()
     {
-        $this->getMock('Cilex\Cards\Card', array(), array(1,14));
+        new \Cilex\Cards\Card(1,14);
     }
     
     /**
@@ -93,7 +93,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetJokerAsString()
     {
-        $object = $this->getMock('Cilex\Cards\Card', null, array(0,1));
+        $object = new \Cilex\Cards\Card(0,1);
         
         $this->assertEquals('joker', $object->getSuitAsString());
     }
@@ -103,7 +103,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAceValueAsString()
     {
-        $object = $this->getMock('Cilex\Cards\Card', null, array(1,1));
+        $object = new \Cilex\Cards\Card(1,1);
         
         $this->assertEquals('ace', $object->getValueAsString());
     }
@@ -113,7 +113,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetJackValueAsString()
     {
-        $object = $this->getMock('Cilex\Cards\Card', null, array(1,11));
+        $object = new \Cilex\Cards\Card(1,11);
         
         $this->assertEquals('jack', $object->getValueAsString());
     }
@@ -123,7 +123,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetQueenValueAsString()
     {
-        $object = $this->getMock('Cilex\Cards\Card', null, array(1,12));
+        $object = new \Cilex\Cards\Card(1,12);
         
         $this->assertEquals('queen', $object->getValueAsString());
     }
@@ -133,7 +133,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetKingValueAsString()
     {
-        $object = $this->getMock('Cilex\Cards\Card', null, array(1,13));
+        $object = new \Cilex\Cards\Card(1,13);
         
         $this->assertEquals('king', $object->getValueAsString());
     }
@@ -143,7 +143,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetValueAsString()
     {
-        $object = $this->getMock('Cilex\Cards\Card', null, array(1,2));
+        $object = new \Cilex\Cards\Card(1,2);
         
         $this->assertEquals('2', $object->getValueAsString());
     }

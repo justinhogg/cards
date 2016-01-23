@@ -30,7 +30,7 @@ class DeckTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMock('Cilex\Cards\Deck', null);
+        $this->object = new \Cilex\Cards\Deck();
     }
     
     /**
@@ -64,7 +64,7 @@ class DeckTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithJokers()
     {
-        $object = $this->getMock('Cilex\Cards\Deck', null, array(true));
+        $object = new \Cilex\Cards\Deck(true);
         
         $this->assertTrue($object->hasJokers());
         

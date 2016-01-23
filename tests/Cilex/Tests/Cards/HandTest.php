@@ -30,7 +30,7 @@ class HandTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMock('Cilex\Cards\Hand', null);
+        $this->object = new \Cilex\Cards\Hand();
     }
     
     /**

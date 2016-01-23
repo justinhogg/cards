@@ -30,7 +30,7 @@ class CasualPlayerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMock('Cilex\Players\CasualPlayer', array());
+        $this->object = new \Cilex\Players\CasualPlayer();
     }
     
     /**
@@ -47,6 +47,27 @@ class CasualPlayerTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
+    }
+    
+    /**
+     * @covers Cilex\Players\CasualPlayer::getHand
+     */
+    public function testGetNoHandSet() 
+    {
+        $this->assertNull($this->object->getHand());
+    }
+    
+    /**
+     * @covers Cilex\Players\CasualPlayer::getHand
+     * @covers Cilex\Players\CasualPlayer::newHand
+     */
+    public function testGetHand() 
+    {
+        $mockHand = $mockHand = $this->getMock('Cilex\Cards\Hand', array());
+        $this->object->newHand($mockHand);
+        
+        $this->assertInstanceOf('Cilex\Cards\Hand', $this->object->getHand());
+        
     }
 }
 

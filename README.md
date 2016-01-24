@@ -30,3 +30,14 @@ To run this command from the root directory:
 
 ``` ./vendor/bin/phpunit ```
 ``` ./vendor/bin/phpunit --testsuite [Cards|Games|Players]```
+
+
+### PSR2
+
+To run this code sniff command from the root directory:
+
+``` ./vendor/bin/phpcs --standard=PSR2 src/Cilex```
+
+To run this code sniff fixer command from the root directory:
+
+``` ./vendor/bin/phpcbf --standard=PSR2 src/Cilex```

@@ -8,10 +8,11 @@
 
 namespace Cilex\Games;
 
-abstract class CardGame {
+abstract class CardGame
+{
     
     /**
-     * @var \Cilex\Cards\Deck 
+     * @var \Cilex\Cards\Deck
      */
     protected $deck;
     
@@ -28,15 +29,14 @@ abstract class CardGame {
      * Returns the deck used for this game
      * @return \Cilex\Cards\Deck
      */
-    public function getDeck() {
+    public function getDeck()
+    {
         return $this->deck;
     }
     
     /**
-     * Card limits per player for this game 
+     * Card limits per player for this game
      * @return int
      */
     abstract public function maxCardsPerPlayer();
-    
-    
 }

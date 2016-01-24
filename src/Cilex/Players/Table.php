@@ -7,7 +7,8 @@
 
 namespace Cilex\Players;
 
-class Table {
+class Table
+{
 
     /**
      * @var array
@@ -19,8 +20,9 @@ class Table {
      */
     protected $game;
     
-    public function __construct() 
-    {}
+    public function __construct()
+    {
+    }
     
     /**
      * Returns the players at the table

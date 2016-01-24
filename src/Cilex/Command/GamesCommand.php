@@ -6,6 +6,7 @@
  */
 
 namespace Cilex\Command;
+
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -63,12 +64,14 @@ class GamesCommand extends Command
         }
         
         //create a new game
-        switch($gameType) {
+        switch ($gameType) {
             case Sevens::GAME_NAME:
                 // add new game to the table
                 $table->addCardGame(new Sevens(new Deck()));
                 //output information
-                $output->writeln("\nA new game of ".Sevens::gameName()." has been created with ".$table->getPlayerCount()." player/s! and an unshuffled deck.\n");
+                $output->writeln("\nA new game of ".Sevens::gameName()." "
+                        . "has been created with ".$table->getPlayerCount()." "
+                        . "player/s! and an unshuffled deck.\n");
                 break;
         }
 
@@ -101,7 +104,7 @@ class GamesCommand extends Command
             . "**************************************************************************\n\n",
             "<question>Please choose a card game to play:</question> [<comment>$defaultType</comment>] ",
         );
-        $gameType = $this->getHelper('dialog')->askAndValidate($output, $question, function($typeInput) {
+        $gameType = $this->getHelper('dialog')->askAndValidate($output, $question, function ($typeInput) {
             if (!in_array($typeInput, array(
                     Sevens::gameName()
                 ))) {
@@ -128,7 +131,7 @@ class GamesCommand extends Command
             "<question>How many players ? </question> [<comment>$defaultPlayers</comment>] ",
         );
         
-        $players = $this->getHelper('dialog')->askAndValidate($output, $question, function($typeInput) {
+        $players = $this->getHelper('dialog')->askAndValidate($output, $question, function ($typeInput) {
             if ((int) $typeInput === 0) {
                 throw new \InvalidArgumentException('There needs to be at least 1 player to play this game!');
             }
@@ -143,7 +146,7 @@ class GamesCommand extends Command
      *
      * @param OutputInterface $output
      * @param Table $table
-     * @return 
+     * @return
      */
     protected function showDeck(OutputInterface $output, Table $table)
     {
@@ -165,7 +168,7 @@ class GamesCommand extends Command
      *
      * @param OutputInterface $output
      * @param Table $table
-     * @return 
+     * @return
      */
     protected function shuffleDeck(OutputInterface $output, Table $table)
     {
@@ -196,7 +199,7 @@ class GamesCommand extends Command
      * @param OutputInterface $output
      * @param Table $table
      *
-     * @return 
+     * @return
      */
     protected function beginRound(OutputInterface $output, $table)
     {
@@ -212,7 +215,7 @@ class GamesCommand extends Command
             if ($round->isFinished()) {
                 $winners = $round->getWinner();
                 //check to see if we have winners
-                if($winners !== null) {
+                if ($winners !== null) {
                     //output information
                     $output->writeln("\n".count($winners)." winner/s of that round.");
                     //lop through the winners and show the hand

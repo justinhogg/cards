@@ -12,7 +12,7 @@ class CasualPlayer extends \Cilex\Players\Player
      *
      * @param mixed null|string $playerName
      */
-    public function __construct($playerName = null) 
+    public function __construct($playerName = null)
     {
         parent::__construct($playerName);
     }
@@ -21,7 +21,7 @@ class CasualPlayer extends \Cilex\Players\Player
      * Returns a hand of cards
      * @return mixed null| \Cilex\Cards\Hand
      */
-    public function getHand() 
+    public function getHand()
     {
         return $this->hand;
     }
@@ -30,8 +30,8 @@ class CasualPlayer extends \Cilex\Players\Player
      * Sets a new hand for the player
      * @param \Cilex\Cards\Hand $hand
      */
-    public function newHand(\Cilex\Cards\Hand $hand){
+    public function newHand(\Cilex\Cards\Hand $hand)
+    {
         $this->hand = $hand;
     }
-   
 }

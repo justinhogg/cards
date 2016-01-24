@@ -15,25 +15,26 @@ class Sevens extends \Cilex\Games\CardGame implements \Cilex\Games\GameInterface
     /**
      * @param \Cilex\Cards\Deck $deck - deck of cards
      */
-    public function __construct(\Cilex\Cards\Deck $deck) 
+    public function __construct(\Cilex\Cards\Deck $deck)
     {
         parent::__construct($deck);
     }
     
     /**
-     * Card limits per player for this game 
+     * Card limits per player for this game
      * @return int
      */
-    public function maxCardsPerPlayer() {
+    public function maxCardsPerPlayer()
+    {
         return 7;
     }
     
     /**
      * Implements the the rules of the game
      * @param array $players
-     * @return mixed null|array 
+     * @return mixed null|array
      */
-    public function gameLogic(array $players) 
+    public function gameLogic(array $players)
     {
         $winningHand = array();
         //loop through the players
@@ -41,7 +42,7 @@ class Sevens extends \Cilex\Games\CardGame implements \Cilex\Games\GameInterface
             //check to see if player is a valid player object
             if ($player instanceof \Cilex\Players\Player) {
                 //check to see if the player has a hand if not set the winning hand to value 0
-                if($player->getHand()->getCardCount() > 0) {
+                if ($player->getHand()->getCardCount() > 0) {
                     $count = 0;
                     //count the card values
                     foreach ($player->getHand()->show() as $card) {
@@ -58,15 +59,15 @@ class Sevens extends \Cilex\Games\CardGame implements \Cilex\Games\GameInterface
         //if there were valid player hands then return a winner else null
         $winner = (!empty($winningHand)) ? $winningHand[max(array_keys($winningHand))] : null;
         
-        //return the winner/s 
+        //return the winner/s
         return $winner;
     }
     
     /**
      * Implements the the rules of the game
-     * @return mixed 
+     * @return mixed
      */
-    public function gameRules() 
+    public function gameRules()
     {
         return null;
     }
@@ -86,7 +87,8 @@ class Sevens extends \Cilex\Games\CardGame implements \Cilex\Games\GameInterface
      */
     public static function gameInformation()
     {
-        return "<comment>". self::GAME_NAME ."</comment>: A game that deals seven cards from a deck to players. The highest value of all cards, held by a player, determines the winner.\n\n";
+        return "<comment>". self::GAME_NAME ."</comment>: "
+                . "A game that deals seven cards from a deck to players. "
+                . "The highest value of all cards, held by a player, determines the winner.\n\n";
     }
-    
 }

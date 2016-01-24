@@ -1,6 +1,6 @@
 <?php
 /**
- * Round 
+ * Round
  * @author Justin Hogg <justin@thekordas.com>
  */
 
@@ -8,7 +8,8 @@ namespace Cilex\Games;
 
 use Cilex\Cards\Hand;
 
-class Round {
+class Round
+{
     
     protected $table;
     
@@ -23,7 +24,8 @@ class Round {
     protected $finished = false;
 
 
-    public function __construct(\Cilex\Players\Table $table) {
+    public function __construct(\Cilex\Players\Table $table)
+    {
         
         $this->table        = $table;
         
@@ -62,7 +64,9 @@ class Round {
         //set the round finished
         $this->setFinished();
         //output information
-        $output->writeln("\nAll ".$this->playerCardLimit." cards have been dealt to the ".$this->table->getPlayerCount()." player/s around the table.");
+        $output->writeln("\nAll ".$this->playerCardLimit." "
+                . "cards have been dealt to the ".$this->table->getPlayerCount()." "
+                . "player/s around the table.");
         $output->writeln("\nThere are ".$this->table->getGame()->getDeck()->cardsLeft()." cards left in the deck.\n");
         
         return $output;

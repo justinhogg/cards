@@ -6,18 +6,19 @@
 
 namespace Cilex\Games;
 
-Interface GameInterface {
+interface GameInterface
+{
     
     /**
      * Implements the the rules of the game
-     * @return mixed 
+     * @return mixed
      */
     public function gameRules();
     
     /**
      * Implements the the rules of the game
      * @param array $players
-     * @return mixed 
+     * @return mixed
      */
     public function gameLogic(array $players);
     
@@ -32,6 +33,4 @@ Interface GameInterface {
      * @return string
      */
     public static function gameInformation();
-    
-    
 }

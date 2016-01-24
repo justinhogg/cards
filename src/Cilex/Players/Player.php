@@ -6,7 +6,8 @@
 
 namespace Cilex\Players;
 
-abstract class Player {
+abstract class Player
+{
     
     protected $name;
     
@@ -20,7 +21,7 @@ abstract class Player {
      *
      * @param mixed null|string $playerName
      */
-    public function __construct($playerName = null) 
+    public function __construct($playerName = null)
     {
         $this->setName(($playerName !== null) ? $playerName: 'player');
     }

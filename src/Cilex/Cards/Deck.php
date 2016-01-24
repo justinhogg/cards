@@ -134,4 +134,21 @@ class Deck
         
         return $deck;
     }
+    
+    /**
+     * Output the deck to the console and view
+     * @return \Symfony\Component\Console\Output\OutputInterface
+     */
+    public function view(\Symfony\Component\Console\Output\OutputInterface $output) {
+        
+        $output->write("\n");
+        
+        //loop through each card
+        foreach ($this->cards() as $card) {
+            $output = $card->view($output);
+        }
+        $output->writeln("\n");
+        
+        return $output;
+    }
 }

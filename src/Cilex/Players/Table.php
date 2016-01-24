@@ -14,6 +14,11 @@ class Table {
      */
     protected $players = array();
     
+    /**
+     * @var mixed
+     */
+    protected $game;
+    
     public function __construct() 
     {}
     
@@ -24,6 +29,15 @@ class Table {
     public function getPlayers()
     {
         return $this->players;
+    }
+    
+    /**
+     * Returns the game at the table
+     * @return mixed
+     */
+    public function getGame()
+    {
+        return $this->game;
     }
     
     /**
@@ -42,5 +56,23 @@ class Table {
     public function addPlayer(\Cilex\Players\Player $player)
     {
         $this->players[] = $player;
+    }
+    
+    /**
+     * Adds a card game to the table
+     * @param \Cilex\Games\CardGame $game
+     */
+    public function addCardGame(\Cilex\Games\CardGame $game)
+    {
+        $this->game = $game;
+    }
+    
+    /**
+     * Returns whether this table has a card game or not
+     * @return boolean
+     */
+    public function hasCardGame()
+    {
+        return (boolean) ($this->game && $this->game instanceof \Cilex\Games\CardGame) ? true: false;
     }
 }

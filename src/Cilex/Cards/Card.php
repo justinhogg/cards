@@ -119,5 +119,19 @@ class Card
         return $value;
     }
     
+    /**
+     * Output the card view
+     * @return \Symfony\Component\Console\Output\OutputInterface
+     */
+    public function view(\Symfony\Component\Console\Output\OutputInterface $output)
+    {
+        //output
+        $fg = ($this->getSuit() === Card::SUIT_HEARTS || $this->getSuit() === Card::SUIT_DIAMONDS) ? 
+                'red':'black';
+        $output->write(" <fg=$fg;bg=white;options=underscore>".$this->getValueAsString()." of ".$this->getSuitAsString()."</> ");
+        
+        return $output;
+    }
+    
     
 }

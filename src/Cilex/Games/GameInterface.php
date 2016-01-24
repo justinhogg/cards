@@ -9,47 +9,29 @@ namespace Cilex\Games;
 Interface GameInterface {
     
     /**
-     *
-     * @param \Cilex\Cards\Deck $deck - deck of cards
-     * @param \Cilex\Players\Table $table - table of players
+     * Implements the the rules of the game
+     * @return mixed 
      */
-    public function __construct(\Cilex\Cards\Deck $deck, \Cilex\Players\Table $table);
+    public function gameRules();
     
     /**
-     * Gets the table
-     * @return \Cilex\Players\Table
+     * Implements the the rules of the game
+     * @param array $players
+     * @return mixed 
      */
-    public function getTable();
-    
-    /**
-     * Returns the deck used for this game
-     * @return \Cilex\Cards\Dec
-     */
-    public function getDeck();
-    
-    /**
-     * Returns the winner/s of this game
-     * @return array
-     */
-    public function getWinner();
-    
-    /**
-     * Card limits per player for this game 
-     * @return int
-     */
-    public function maxCardsPerRound();
+    public function gameLogic(array $players);
     
     /**
      * Returns the name of the game
      * @return string
      */
-    public static function getName();
+    public static function gameName();
     
     /**
      * Returns information about the game
      * @return string
      */
-    public static function getInformation();
+    public static function gameInformation();
     
     
 }

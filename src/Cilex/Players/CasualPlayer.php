@@ -10,9 +10,12 @@ class CasualPlayer extends \Cilex\Players\Player
 {
     /**
      *
+     * @param mixed null|string $playerName
      */
-    public function __construct() 
-    {}
+    public function __construct($playerName = null) 
+    {
+        parent::__construct($playerName);
+    }
 
     /**
      * Returns a hand of cards

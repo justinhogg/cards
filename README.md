@@ -41,3 +41,9 @@ To run this code sniff command from the root directory:
 To run this code sniff fixer command from the root directory:
 
 ``` ./vendor/bin/phpcbf --standard=PSR2 src/Cilex```
+
+### Vagrant Box
+
+To boot into the vagrant box (trusty32), from the root directory:
+
+``` vagrant up```

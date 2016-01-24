@@ -2,3 +2,5 @@
 /nbproject/
 /vendor/
 /tests/logs/
+/.vagrant/
+/composer.lock

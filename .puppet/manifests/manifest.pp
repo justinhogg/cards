@@ -19,14 +19,31 @@ node default {
     }
 
     exec { "get-composer":
+        environment => ["COMPOSER_HOME=/usr/local/bin"],
         command => "/usr/bin/wget -N http://getcomposer.org/composer.phar",
         require => Package["wget"],
         cwd     => "/vagrant"
     }
 
+    exec { "move-composer":
+        user => "root",
+        command => "mv composer.phar /usr/local/bin/composer",
+        provider => "shell",
+        require => [Exec["get-composer"]],
+        cwd     => "/vagrant"
+    }
+
+    file { "/usr/local/bin/composer":
+        mode => 770,
+        require => Exec["move-composer"],
+    }
+
     exec { "composer-install":
-        command => "/usr/bin/php composer.phar install --dev",
-        require => Exec["get-composer"],
+        user => "root",
+        environment => ["COMPOSER_HOME=/usr/local/bin"],
+        timeout => 0,
+        command => "/usr/local/bin/composer install --dev",
+        require => File["/usr/local/bin/composer"],
         cwd     => "/vagrant"
     }
 }

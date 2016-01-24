@@ -17,8 +17,6 @@ use Cilex\Players\CasualPlayer;
 use Cilex\Games\Sevens;
 use Cilex\Games\Round;
 use Cilex\Cards\Deck;
-use Cilex\Cards\Hand;
-use Cilex\Cards\Card;
 
 class GamesCommand extends Command
 {

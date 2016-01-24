@@ -63,7 +63,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function testCardsCommand()
     {
+        $this->assertFalse($this->app['console']->has('play:cards'));
+
         $this->app->command(new GamesCommand());
+
+        $this->assertTrue($this->app['console']->has('play:cards'));
+
+        $this->assertSame($this->app, $this->app['console']->get('play:cards')->getContainer());
     }
 
 }

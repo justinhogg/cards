@@ -13,6 +13,8 @@ namespace Cilex\Tests\Command;
 
 use Cilex\Command;
 use Cilex\Application;
+use Cilex\Command\GamesCommand;
+use Symfony\Component\Console\Tester\CommandTester;
 
 class CommandMock extends \Cilex\Provider\Console\Command {}
 
@@ -31,7 +33,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->fixture = new CommandMock('demo:test');
+        $this->fixture = new CommandMock('play:cards');
     }
 
     /**

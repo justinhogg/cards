@@ -13,6 +13,10 @@ class SevensTest extends \PHPUnit_Framework_TestCase
      * @var Cilex\Games\Sevens
      */
     protected $object;
+    /**
+     * @var Cilex\Players\Player
+     */
+    protected $mockPlayer;
      /**
      * @var class
      */
@@ -29,6 +33,8 @@ class SevensTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        //set up test objects
+        
         //set up test object
         $mockCard = $this->getMock('Cilex\Cards\Card', array('getValue'), array(1,5));
         $mockCard->expects($this->any())->method('getValue')->will($this->returnValue(5));
@@ -37,30 +43,21 @@ class SevensTest extends \PHPUnit_Framework_TestCase
         $mockHand->expects($this->any())->method('addCard')->will($this->returnValue($mockCard));
         $mockHand->expects($this->any())->method('show')->will($this->returnValue(array(0=>$mockCard)));
         
-        $mockPlayer = $this->getMock('Cilex\Players\CasualPlayer', array('getHand'));
-        $mockPlayer->expects($this->any())->method('getHand')->will($this->returnValue($mockHand));
-        
-        $mockDeck = $this->getMock('Cilex\Cards\Deck');
-        //set up mock table
-        $mockTable = $this->getMock('Cilex\Players\Table', array('getPlayers','getPlayerCount'));
-        
         switch ($this->getName()) {
-            case 'testGetWinnerNoPlayers':
-                $mockTable->expects($this->any())->method('getPlayerCount')->will($this->returnValue(0));
-                break;
-            case 'testGetWinnerNoHand':
+            case 'testGameLogicWithNoWinner':
                 $mockHand->expects($this->any())->method('getCardCount')->will($this->returnValue(0));
-                $mockTable->expects($this->any())->method('getPlayerCount')->will($this->returnValue(1));
-                $mockTable->expects($this->any())->method('getPlayers')->will($this->returnValue(array(0=>$mockPlayer)));
                 break;
             default:
                 $mockHand->expects($this->any())->method('getCardCount')->will($this->returnValue(1));
-                $mockTable->expects($this->any())->method('getPlayerCount')->will($this->returnValue(1));
-                $mockTable->expects($this->any())->method('getPlayers')->will($this->returnValue(array(0=>$mockPlayer)));
                 break;
         }
-
-        $this->object = new \Cilex\Games\Sevens($mockDeck, $mockTable);
+        
+        $this->mockPlayer = $this->getMock('Cilex\Players\CasualPlayer', array('getHand'));
+        $this->mockPlayer->expects($this->any())->method('getHand')->will($this->returnValue($mockHand));
+        
+        $mockDeck = $this->getMock('Cilex\Cards\Deck');
+        
+        $this->object = new \Cilex\Games\Sevens($mockDeck);
     }
     
     /**
@@ -74,17 +71,10 @@ class SevensTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests whether the constructor instantiates the correct dependencies.
      * @covers Cilex\Games\Sevens::__construct
+     * @covers Cilex\Games\CardGame::__construct
      */
     public function testConstruct()
     {
-    }
-    
-    /**
-     * @covers Cilex\Games\Sevens::getTable
-     */
-    public function testGetTable()
-    {
-        $this->assertInstanceOf('\Cilex\Players\Table', $this->object->getTable());
     }
     
     /**
@@ -96,56 +86,60 @@ class SevensTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @covers Cilex\Games\Sevens::maxCardsPerRound
+     * @covers Cilex\Games\Sevens::maxCardsPerPlayer
      */
-    public function testMaxCardsPerRound()
+    public function testMaxCardsPerPlayer()
     {
-        $this->assertEquals(7, $this->object->maxCardsPerRound());
+        $this->assertEquals(7, $this->object->maxCardsPerPlayer());
     }
     
     /**
-     * @covers Cilex\Games\Sevens::getWinner
-     * @expectedException        InvalidArgumentException
-     * @expectedExceptionMessage Not enough players to determine a winner!
-     */
-    public function testGetWinnerNoPlayers()
-    {
-        $this->object->getWinner();
-    }
-    
-    /**
-     * @covers Cilex\Games\Sevens::getWinner
-     */
-    public function testGetWinnerNoHand()
-    {
-        $winner = $this->object->getWinner();
-        $this->assertArrayHasKey(0, $winner);
-        $this->assertInstanceOf('\Cilex\Players\Player', $winner[0]);
-    }
-    
-    /**
-     * @covers Cilex\Games\Sevens::getWinner
-     */
-    public function testGetWinner()
-    {
-        $winner = $this->object->getWinner();
-        $this->assertArrayHasKey(0, $winner);
-        $this->assertInstanceOf('\Cilex\Players\Player', $winner[0]);
-    }
-    
-    /**
-     * @covers Cilex\Games\Sevens::getName
+     * @covers Cilex\Games\Sevens::gameName
      */
     public function testGetName()
     {
-        $this->assertEquals('sevens', $this->object->getName());
+        $this->assertEquals('sevens', \Cilex\Games\Sevens::gameName());
     }
     
     /**
-     * @covers Cilex\Games\Sevens::getInformation
+     * @covers Cilex\Games\Sevens::gameInformation
      */
     public function testInformation()
     {
-        $this->assertStringMatchesFormat('%a', \Cilex\Games\Sevens::getInformation());
+        $this->assertStringMatchesFormat('%a', \Cilex\Games\Sevens::gameInformation());
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::gameLogic
+     * @expectedException        InvalidArgumentException
+     * @expectedExceptionMessage Invalid player in this game!
+     */
+    public function testGameLogicWithABadPlayer()
+    {
+        $this->object->gameLogic(array('test'));
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::gameLogic
+     */
+    public function testGameLogicWithNoWinner()
+    {
+        $this->assertNull($this->object->gameLogic(array(0=>$this->mockPlayer)));
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::gameLogic
+     */
+    public function testGameLogic()
+    {
+        $this->assertCount(1, $this->object->gameLogic(array(0=>$this->mockPlayer)));
+    }
+    
+    /**
+     * @covers Cilex\Games\Sevens::gameRules
+     */
+    public function testGameRules()
+    {
+        $this->assertNull($this->object->gameRules());
     }
 }

@@ -56,4 +56,5 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Symfony\Component\Console\Application', $this->fixture->getService('console'));
     }
+    
 }

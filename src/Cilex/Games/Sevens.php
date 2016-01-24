@@ -24,35 +24,42 @@ class Sevens extends \Cilex\Games\CardGame implements \Cilex\Games\GameInterface
      * Card limits per player for this game 
      * @return int
      */
-    public function maxCardsPerRound() {
+    public function maxCardsPerPlayer() {
         return 7;
     }
     
     /**
      * Implements the the rules of the game
      * @param array $players
-     * @return mixed 
+     * @return mixed null|array 
      */
     public function gameLogic(array $players) 
     {
         $winningHand = array();
         //loop through the players
         foreach ($players as $player) {
-            //check to see if the player has a hand if not set the winning hand to value 0
-            if($player->getHand()->getCardCount() > 0) {
-                $count = 0;
-                //count the card values
-                foreach ($player->getHand()->show() as $card) {
-                    $count = $count + $card->getValue();
+            //check to see if player is a valid player object
+            if ($player instanceof \Cilex\Players\Player) {
+                //check to see if the player has a hand if not set the winning hand to value 0
+                if($player->getHand()->getCardCount() > 0) {
+                    $count = 0;
+                    //count the card values
+                    foreach ($player->getHand()->show() as $card) {
+                        $count = $count + $card->getValue();
+                    }
+                    //add to the players array
+                    $winningHand[$count][] = $player;
                 }
-                //add to the players array
-                $winningHand[$count][] = $player;
             } else {
-                $winningHand[0][] = $player;
+                throw new \InvalidArgumentException('Invalid player in this game!');
             }
         }
-        //return the winning hands 
-        return $winningHand[max(array_keys($winningHand))];
+        
+        //if there were valid player hands then return a winner else null
+        $winner = (!empty($winningHand)) ? $winningHand[max(array_keys($winningHand))] : null;
+        
+        //return the winner/s 
+        return $winner;
     }
     
     /**
@@ -60,7 +67,9 @@ class Sevens extends \Cilex\Games\CardGame implements \Cilex\Games\GameInterface
      * @return mixed 
      */
     public function gameRules() 
-    {}
+    {
+        return null;
+    }
     
     /**
      * Returns the name of the game

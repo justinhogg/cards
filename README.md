@@ -29,3 +29,4 @@ To run this command from the root directory:
 To run this command from the root directory:
 
 ``` ./vendor/bin/phpunit ```
+``` ./vendor/bin/phpunit --testsuite [Cards|Games|Players]```

@@ -16,6 +16,8 @@ class Round {
     
     protected $players;
     
+    protected $playerCardLimit;
+    
     protected $cardKeys = array();
     
     protected $finished = false;
@@ -23,27 +25,27 @@ class Round {
 
     public function __construct(\Cilex\Players\Table $table) {
         
-        $this->table = $table;
+        $this->table        = $table;
         
-        $this->cards    = $this->table->getGame()->getDeck()->cards();
+        $this->cards        = $this->table->getGame()->getDeck()->cards();
         
-        $this->cardKeys = array_keys($this->cards);
+        $this->cardKeys     = array_keys($this->cards);
         
-        $this->players  = $this->table->getPlayers();
+        $this->players      = $this->table->getPlayers();
+        
+        $this->playerCardLimit = $this->table->getGame()->maxCardsPerPlayer();
     }
     
     /**
-     * Start the round
+     * Deal the round
      * @return \Symfony\Component\Console\Output\OutputInterface
      */
     public function start(\Symfony\Component\Console\Output\OutputInterface $output)
     {
-        //TODO abstract this
-        $maxCardsAllowed = $this->table->getGame()->maxCardsPerRound();
-        
         //TODO add interaction with console here ie ask to deal to player 1 etc
+        //TODO abstract each move into smaller manageble methods
         
-        for ($i = 0; $i < $maxCardsAllowed; $i++) {
+        for ($i = 0; $i < $this->playerCardLimit; $i++) {
             foreach ($this->players as $player) {
                 //create a new hand if one does not exist
                 ($player->getHand() === null) ? $player->newHand(new Hand()):false;
@@ -60,7 +62,7 @@ class Round {
         //set the round finished
         $this->setFinished();
         //output information
-        $output->writeln("\nAll ".$maxCardsAllowed." cards have been dealt to the ".$this->table->getPlayerCount()." player/s around the table.");
+        $output->writeln("\nAll ".$this->playerCardLimit." cards have been dealt to the ".$this->table->getPlayerCount()." player/s around the table.");
         $output->writeln("\nThere are ".$this->table->getGame()->getDeck()->cardsLeft()." cards left in the deck.\n");
         
         return $output;
@@ -97,7 +99,7 @@ class Round {
     /**
      * Sets whether this round is finished
      */
-    protected function setFinished()
+    public function setFinished()
     {
         $this->finished = true;
     }

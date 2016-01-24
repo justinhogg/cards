@@ -36,7 +36,7 @@ abstract class CardGame {
      * Card limits per player for this game 
      * @return int
      */
-    abstract public function maxCardsPerRound();
+    abstract public function maxCardsPerPlayer();
     
     
 }

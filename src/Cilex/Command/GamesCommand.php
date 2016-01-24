@@ -213,16 +213,22 @@ class GamesCommand extends Command
             
             if ($round->isFinished()) {
                 $winners = $round->getWinner();
-                //output information
-                $output->writeln("\n".count($winners)." winner/s of that round.");
-                //lop through the winners and show the hand
-                foreach ($winners as $winner) {
-                    //output
-                    $output->write("\n".$winner->getName()." had the following winning hand: ");
-                    //loop through each card and show
-                    foreach ($winner->getHand()->show() as $card) {
-                        $output = $card->view($output);
+                //check to see if we have winners
+                if($winners !== null) {
+                    //output information
+                    $output->writeln("\n".count($winners)." winner/s of that round.");
+                    //lop through the winners and show the hand
+                    foreach ($winners as $winner) {
+                        //output
+                        $output->write("\n".$winner->getName()." had the following winning hand: ");
+                        //loop through each card and show
+                        foreach ($winner->getHand()->show() as $card) {
+                            $output = $card->view($output);
+                        }
                     }
+                } else {
+                    //output information
+                    $output->writeln("\nThere were no winners of that round.");
                 }
             }
             

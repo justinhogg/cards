@@ -127,4 +127,14 @@ class DeckTest extends \PHPUnit_Framework_TestCase
         
         $this->object->deal();
     }
+    
+    /**
+     * @covers Cilex\Cards\Deck::view
+     */
+    public function testView()
+    {
+        $mockOutput = $this->getMockForAbstractClass('Symfony\Component\Console\Output\OutputInterface');
+        
+        $this->assertInstanceOf('\Symfony\Component\Console\Output\OutputInterface',  $this->object->view($mockOutput));
+    }
 }

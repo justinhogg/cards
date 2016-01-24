@@ -30,7 +30,7 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         //set up test object
-        $this->object = $this->getMockForAbstractClass('Cilex\Players\Player');
+        $this->object = $this->getMockForAbstractClass('Cilex\Players\Player', array('test'));
     }
     
     /**
@@ -42,22 +42,23 @@ class PlayerTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * Tests whether the constructor instantiates the correct dependencies.
+     * @covers Cilex\Games\Sevens::__construct
      * @covers Cilex\Players\Player::setName
      * @covers Cilex\Players\Player::getName
      */
-    public function testSetName()
+    public function testConstruct()
     {
-        $this->object->setName('test');
-        
         $this->assertEquals('test', $this->object->getName());
     }
     
     /**
      * @covers Cilex\Players\Player::getName
      */
-    public function testGetName()
+    public function testGetDefaultName()
     {
-        $this->assertEquals('player', $this->object->getName());
+        $mockObject = $this->getMockForAbstractClass('Cilex\Players\Player');
+        $this->assertEquals('player', $mockObject->getName());
     }
     
     /**

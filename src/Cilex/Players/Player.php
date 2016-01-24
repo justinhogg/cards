@@ -6,9 +6,10 @@
 
 namespace Cilex\Players;
 
-abstract class Player {
+abstract class Player
+{
     
-    protected $name     = 'player';
+    protected $name;
     
     protected $hand;
     
@@ -16,6 +17,19 @@ abstract class Player {
     
     protected $losses   = 0;
     
+    /**
+     *
+     * @param mixed null|string $playerName
+     */
+    public function __construct($playerName = null)
+    {
+        $this->setName(($playerName !== null) ? $playerName: 'player');
+    }
+    
+    /**
+     * Returns the losses of the player
+     * @return int
+     */
     public function getLosses()
     {
         return (int) $this->losses;
@@ -28,16 +42,6 @@ abstract class Player {
     public function getWins()
     {
         return (int) $this->wins;
-    }
-    
-    /**
-     * Set a name for the player
-     *
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
     }
     
     /**
@@ -64,6 +68,16 @@ abstract class Player {
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * Set a name for the player
+     *
+     * @param string $name
+     */
+    protected function setName($name)
+    {
+        $this->name = $name;
     }
     
     /**

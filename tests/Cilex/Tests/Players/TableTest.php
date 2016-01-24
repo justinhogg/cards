@@ -75,5 +75,40 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(0, $this->object->getPlayerCount());
     }
+    
+    /**
+     * @covers Cilex\Players\Table::getGame
+     * @covers Cilex\Players\Table::addCardGame
+     */
+    public function testGetCardGame()
+    {
+        $mockDeck = $this->getMock('Cilex\Cards\Deck');
+        $mockCardGame = $this->getMock('Cilex\Games\Sevens', null, array($mockDeck));
+        $this->object->addCardGame($mockCardGame);
+        
+        $this->assertInstanceOf('\Cilex\Games\CardGame', $this->object->getGame());
+    }
+    
+     /**
+     * @covers Cilex\Players\Table::hasCardGame
+     * @covers Cilex\Players\Table::addCardGame
+     */
+    public function testHasCardGame()
+    {
+        $mockDeck = $this->getMock('Cilex\Cards\Deck');
+        $mockCardGame = $this->getMock('Cilex\Games\Sevens', null, array($mockDeck));
+        $this->object->addCardGame($mockCardGame);
+        
+        $this->assertTrue($this->object->hasCardGame());
+    }
+    
+     /**
+     * @covers Cilex\Players\Table::hasCardGame
+     * @covers Cilex\Players\Table::addCardGame
+     */
+    public function testHasNoCardGame()
+    {
+        $this->assertFalse($this->object->hasCardGame());
+    }
 }
 

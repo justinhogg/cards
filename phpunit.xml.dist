@@ -15,6 +15,15 @@
         <testsuite name="Cilex Test Suite">
             <directory>./tests/Cilex/</directory>
         </testsuite>
+        <testsuite name="Cards">
+            <directory>./tests/Cilex/Tests/Cards</directory>
+        </testsuite>
+        <testsuite name="Games">
+            <directory>./tests/Cilex/Tests/Games</directory>
+        </testsuite>
+        <testsuite name="Players">
+            <directory>./tests/Cilex/Tests/Players</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

@@ -7,15 +7,22 @@
 
 namespace Cilex\Players;
 
-class Table {
+class Table
+{
 
     /**
      * @var array
      */
     protected $players = array();
     
-    public function __construct() 
-    {}
+    /**
+     * @var mixed
+     */
+    protected $game;
+    
+    public function __construct()
+    {
+    }
     
     /**
      * Returns the players at the table
@@ -24,6 +31,15 @@ class Table {
     public function getPlayers()
     {
         return $this->players;
+    }
+    
+    /**
+     * Returns the game at the table
+     * @return mixed
+     */
+    public function getGame()
+    {
+        return $this->game;
     }
     
     /**
@@ -42,5 +58,23 @@ class Table {
     public function addPlayer(\Cilex\Players\Player $player)
     {
         $this->players[] = $player;
+    }
+    
+    /**
+     * Adds a card game to the table
+     * @param \Cilex\Games\CardGame $game
+     */
+    public function addCardGame(\Cilex\Games\CardGame $game)
+    {
+        $this->game = $game;
+    }
+    
+    /**
+     * Returns whether this table has a card game or not
+     * @return boolean
+     */
+    public function hasCardGame()
+    {
+        return (boolean) ($this->game && $this->game instanceof \Cilex\Games\CardGame) ? true: false;
     }
 }

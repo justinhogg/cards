@@ -12,7 +12,7 @@
 namespace Cilex\Tests;
 
 use Cilex\Application;
-use Cilex\Command\CardsCommand;
+use Cilex\Command\GamesCommand;
 
 /**
  * Application test cases.
@@ -63,7 +63,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function testCardsCommand()
     {
-        $this->app->command(new CardsCommand());
+        $this->assertFalse($this->app['console']->has('play:cards'));
+
+        $this->app->command(new GamesCommand());
+
+        $this->assertTrue($this->app['console']->has('play:cards'));
+
+        $this->assertSame($this->app, $this->app['console']->get('play:cards')->getContainer());
     }
 
 }

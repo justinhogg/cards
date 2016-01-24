@@ -11,7 +11,7 @@ use Cilex\Cards\Card;
 class Deck
 {
     /**
-     * @var boolean 
+     * @var boolean
      */
     protected $jokers = false;
     
@@ -26,7 +26,7 @@ class Deck
     protected $cardsUsed = 0;
     
     /**
-     * 
+     *
      * @param boolean $includeJokers
      */
     public function __construct($includeJokers = false)
@@ -55,7 +55,7 @@ class Deck
         //shuffle
         shuffle($keys);
         
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
             $deck[$key] = $newDeck[$key];
         }
         
@@ -83,7 +83,7 @@ class Deck
     }
     
     /**
-     * Deal increments the cards used by the deck, throws exception if no more cards left 
+     * Deal increments the cards used by the deck, throws exception if no more cards left
      * @throws \InvalidArgumentException
      */
     public function deal()
@@ -133,5 +133,23 @@ class Deck
         }
         
         return $deck;
+    }
+    
+    /**
+     * Output the deck to the console and view
+     * @return \Symfony\Component\Console\Output\OutputInterface
+     */
+    public function view(\Symfony\Component\Console\Output\OutputInterface $output)
+    {
+        
+        $output->write("\n");
+        
+        //loop through each card
+        foreach ($this->cards() as $card) {
+            $output = $card->view($output);
+        }
+        $output->writeln("\n");
+        
+        return $output;
     }
 }

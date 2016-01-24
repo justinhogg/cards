@@ -26,7 +26,7 @@ class Card
     const TYPE_KING     = 13;
     
     /**
-     * @var array 
+     * @var array
      */
     public $suits = array(
         self::SUIT_HEARTS   => 'hearts',
@@ -36,7 +36,7 @@ class Card
     );
     
     /**
-     * @var int 
+     * @var int
      */
     protected $suit;
     
@@ -51,10 +51,10 @@ class Card
      * @param mixed $value
      * @throws \InvalidArgumentException
      */
-    public function __construct($suit, $value) 
+    public function __construct($suit, $value)
     {
         //if suit is not defined and value is outside of the range then throw exception
-        if (($suit !== self::SUIT_JOKER && !array_key_exists($suit, $this->suits)) || $value < 1 || $value > 13 ) {
+        if (($suit !== self::SUIT_JOKER && !array_key_exists($suit, $this->suits)) || $value < 1 || $value > 13) {
             throw new \InvalidArgumentException('Invalid card suit or value');
         }
         //set suit
@@ -119,5 +119,18 @@ class Card
         return $value;
     }
     
-    
+    /**
+     * Output the card view
+     * @return \Symfony\Component\Console\Output\OutputInterface
+     */
+    public function view(\Symfony\Component\Console\Output\OutputInterface $output)
+    {
+        //output
+        $fg = ($this->getSuit() === Card::SUIT_HEARTS || $this->getSuit() === Card::SUIT_DIAMONDS) ?
+                'red':'black';
+        $output->write(" <fg=$fg;bg=white;options=underscore>".$this->getValueAsString()." "
+                . "of ".$this->getSuitAsString()."</> ");
+        
+        return $output;
+    }
 }

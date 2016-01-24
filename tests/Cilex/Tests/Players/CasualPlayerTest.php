@@ -44,6 +44,7 @@ class CasualPlayerTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests whether the constructor instantiates the correct dependencies.
      * @covers Cilex\Players\CasualPlayer::__construct
+     * @covers Cilex\Players\Player::__construct
      */
     public function testConstruct()
     {

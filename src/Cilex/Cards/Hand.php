@@ -13,7 +13,9 @@ class Hand
      */
     protected $cards = array();
     
-    public function __construct() {}
+    public function __construct()
+    {
+    }
     
     /**
      * Adds a card to the hand
@@ -34,7 +36,7 @@ class Hand
     }
     
     /**
-     * 
+     *
      * @return null
      */
     public function sortBySuit()
@@ -43,7 +45,7 @@ class Hand
     }
     
     /**
-     * 
+     *
      * @return null
      */
     public function sortByValue()
